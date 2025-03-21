@@ -8,8 +8,9 @@
 > Below is a step by step guide on how to get TempestPy up and running!
 
 ## Installing TempestPy
-> To run TempestPy and it's accompanying scripts, you need to have Python and the package "MetPy" installed on pip
+> To run TempestPy and it's accompanying scripts, you need to have [Python](https://python.org) and the package "MetPy" installed on pip
 
 > To install "MetPy" on pip, just run the following command:
 
 > `pip install metpy`
+
