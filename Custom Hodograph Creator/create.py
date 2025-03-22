@@ -106,7 +106,7 @@ ax.text(rm_u.m, rm_v.m, 'RM', color='r', fontsize=12, fontweight='bold', ha='lef
 ax.text(lm_u.m, lm_v.m, 'LM', color='g', fontsize=12, fontweight='bold', ha='right')
 
 # Display helicity in the corner of the plot
-ax.text(0.95, 0.05, f'Helicity: {helicity:.2f} m²/s', transform=ax.transAxes,
+ax.text(0.95, 0.05, f'Helicity: {helicity.magnitude:.2f} m²/s', transform=ax.transAxes,
         fontsize=12, verticalalignment='bottom', horizontalalignment='right',
         bbox=dict(facecolor='white', alpha=0.8, edgecolor='black', boxstyle='round,pad=0.5'))
 
