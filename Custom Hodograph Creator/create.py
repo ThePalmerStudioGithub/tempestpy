@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import metpy.calc as mpcalc
 from metpy.plots import Hodograph
 from metpy.units import units
-version = "0.0.0.3";
+version = "0.0.0.4";
 
 # Open the file in read mode
 with open('..\globalversionnumber.txt', 'r') as file:
@@ -49,9 +49,11 @@ wind_direction = np.array([winddirection_surface, winddirection_two, winddirecti
 
 # Convert wind speed and direction to u/v components
 u, v = mpcalc.wind_components(wind_speed, wind_direction)
-
+# Define the upper and lower pressure levels for calculating helicity
+lower_level = 1000 * units.hPa
+upper_level = 500 * units.hPa  # You can adjust this based on your needs
 # Calculate helicity (storm-relative helicity)
-helicity = mpcalc.storm_relative_helicity(pressure_levels, u, v)
+helicity = mpcalc.storm_relative_helicity(pressure_levels, u, v, depth=upper_level - lower_level)
 helicity_value = helicity.magnitude
 
 # Calculate wind shear (wind speed difference between surface and upper levels)
