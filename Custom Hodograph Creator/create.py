@@ -50,14 +50,9 @@ wind_direction = np.array([winddirection_surface, winddirection_two, winddirecti
 # Convert wind speed and direction to u/v components
 u, v = mpcalc.wind_components(wind_speed, wind_direction)
 # Convert pressure levels to height (meters)
-height_levels = mpcalc.add_height_to_pressure(pressure_levels)
-
-# Define the upper and lower pressure levels for calculating helicity (in meters)
-lower_level = height_levels[0]  # Height at 1000 hPa
-upper_level = height_levels[2]  # Height at 600 hPa (you can adjust this as needed)
-# Calculate helicity (storm-relative helicity)
-helicity = mpcalc.storm_relative_helicity(pressure_levels, u, v, depth=upper_level - lower_level)
-helicity_value = helicity.magnitude
+du_dz = np.diff(u) / np.diff(pressure_levels)  # Change in u with height
+dv_dz = np.diff(v) / np.diff(pressure_levels)  # Change in v with height
+helicity = np.sum(u[:-1] * dv_dz - v[:-1] * du_dz)  # Total helicity in m^2/s
 
 # Calculate wind shear (wind speed difference between surface and upper levels)
 shear_u, shear_v = u[-1] - u[0], v[-1] - v[0]  # Deep-layer shear vector
