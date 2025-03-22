@@ -3,8 +3,7 @@ import matplotlib.pyplot as plt
 import metpy.calc as mpcalc
 from metpy.plots import Hodograph
 from metpy.units import units
-
-version = "0.0.0.2"
+version = "0.0.0.3";
 
 # Open the file in read mode
 with open('..\globalversionnumber.txt', 'r') as file:
@@ -48,28 +47,29 @@ pressure_levels = np.array([1000, 850, 600, 350, 150]) * units.hPa
 wind_speed = np.array([windspeed_surface, windspeed_two, windspeed_three, windspeed_four, windspeed_five]) * units.knots
 wind_direction = np.array([winddirection_surface, winddirection_two, winddirection_three, winddirection_four, winddirection_five]) * units.degrees
 
-# Processing your data and creating a Skew-T diagram
-print("Processing your data and creating a Hodograph out of it......")
-
 # Convert wind speed and direction to u/v components
 u, v = mpcalc.wind_components(wind_speed, wind_direction)
 
-# Calculate mean wind (0-6 km layer)
-mean_u, mean_v = np.mean(u[:4]), np.mean(v[:4])  # Adjust layers as needed
+# Calculate helicity (storm-relative helicity)
+helicity = mpcalc.storm_relative_helicity(pressure_levels, u, v)
+helicity_value = helicity.magnitude
 
-# Compute storm motion vectors using Bunkers' method
+# Calculate wind shear (wind speed difference between surface and upper levels)
 shear_u, shear_v = u[-1] - u[0], v[-1] - v[0]  # Deep-layer shear vector
 shear_mag = np.sqrt(shear_u**2 + shear_v**2)
+
+# Processing your data and creating a Skew-T diagram
+print("Processing your data and creating a Hodograph out of it......")
+
+# Mean wind (0-6 km layer)
+mean_u, mean_v = np.mean(u[:4]), np.mean(v[:4])
+
+# Compute storm motion vectors using Bunkers' method
 perp_shear_u = -shear_v / shear_mag * 7.5 * units.knots  # Perpendicular component
 perp_shear_v = shear_u / shear_mag * 7.5 * units.knots
 
 rm_u, rm_v = mean_u + perp_shear_u, mean_v + perp_shear_v  # Right-moving
 lm_u, lm_v = mean_u - perp_shear_u, mean_v - perp_shear_v  # Left-moving
-
-# Calculate helicity (approximate using wind changes with respect to height)
-du_dz = np.diff(u) / np.diff(pressure_levels)  # Change in u with height
-dv_dz = np.diff(v) / np.diff(pressure_levels)  # Change in v with height
-helicity = np.sum(u[:-1] * dv_dz - v[:-1] * du_dz)  # Total helicity in m^2/s
 
 # Create hodograph plot
 fig, ax = plt.subplots(figsize=(6, 6))
@@ -105,15 +105,15 @@ ax.scatter([rm_u.m, lm_u.m], [rm_v.m, lm_v.m], color=['r', 'g'], zorder=3)
 ax.text(rm_u.m, rm_v.m, 'RM', color='r', fontsize=12, fontweight='bold', ha='left')
 ax.text(lm_u.m, lm_v.m, 'LM', color='g', fontsize=12, fontweight='bold', ha='right')
 
-# Display helicity in the corner of the plot
-ax.text(0.95, 0.05, f'Helicity: {helicity.magnitude:.2f} m²/s', transform=ax.transAxes,
-        fontsize=12, verticalalignment='bottom', horizontalalignment='right',
-        bbox=dict(facecolor='white', alpha=0.8, edgecolor='black', boxstyle='round,pad=0.5'))
+# Display helicity and shear on the plot
+ax.text(0.95, 0.05, f"Helicity: {helicity_value:.2f} m²/s²", transform=ax.transAxes, fontsize=12, ha='right', color='purple')
+ax.text(0.95, 0.01, f"Wind Shear: {shear_mag:.2f} knots", transform=ax.transAxes, fontsize=12, ha='right', color='purple')
 
 plt.legend()
 plt.title(name_of_hodograph)
 plt.get_current_fig_manager().window.title(f"{name_of_hodograph} - {date_of_hodograph} @ {timestamp_of_hodograph}z - Custom Hodograph Creator by Blaine Palmer (Ver {version}) || TempestPy {tempestpy_releasenameandversion} ")
 print("Hodograph generated✅")
+
 # Set the custom icon
 fig_manager = plt.get_current_fig_manager()
 # Access Tkinter root window and set the icon
