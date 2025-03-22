@@ -106,8 +106,8 @@ ax.text(rm_u.m, rm_v.m, 'RM', color='r', fontsize=12, fontweight='bold', ha='lef
 ax.text(lm_u.m, lm_v.m, 'LM', color='g', fontsize=12, fontweight='bold', ha='right')
 
 # Display helicity and shear on the plot
-ax.text(0.95, 0.05, f"Helicity: {helicity_value:.2f} m²/s²", transform=ax.transAxes, fontsize=12, ha='right', color='purple')
-ax.text(0.95, 0.07, f"Wind Shear: {shear_mag:.2f} knots", transform=ax.transAxes, fontsize=12, ha='right', color='purple')
+ax.text(0.95, 0.05, f"Helicity: {helicity.magnitude:.2f} m²/s²", transform=ax.transAxes, fontsize=12, ha='right', color='red')
+ax.text(0.95, 0.08, f"Wind Shear: {shear_mag.magnitude:.2f} kts", transform=ax.transAxes, fontsize=12, ha='right', color='green')
 
 plt.legend()
 plt.title(name_of_hodograph)
