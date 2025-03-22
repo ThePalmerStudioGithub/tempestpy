@@ -49,9 +49,12 @@ wind_direction = np.array([winddirection_surface, winddirection_two, winddirecti
 
 # Convert wind speed and direction to u/v components
 u, v = mpcalc.wind_components(wind_speed, wind_direction)
-# Define the upper and lower pressure levels for calculating helicity
-lower_level = 1000 * units.hPa
-upper_level = 500 * units.hPa  # You can adjust this based on your needs
+# Convert pressure levels to height (meters)
+height_levels = mpcalc.pres_to_height(pressure_levels)
+
+# Define the upper and lower pressure levels for calculating helicity (in meters)
+lower_level = height_levels[0]  # Height at 1000 hPa
+upper_level = height_levels[2]  # Height at 600 hPa (you can adjust this as needed)
 # Calculate helicity (storm-relative helicity)
 helicity = mpcalc.storm_relative_helicity(pressure_levels, u, v, depth=upper_level - lower_level)
 helicity_value = helicity.magnitude
