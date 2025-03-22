@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 import metpy.calc as mpcalc
 from metpy.plots import Hodograph
 from metpy.units import units
-version = "0.0.0.1";
+
+version = "0.0.0.2"
+
 # Open the file in read mode
 with open('..\globalversionnumber.txt', 'r') as file:
-    # Read the contents of the file and assign it to a variable
     tempestpy_releasenameandversion = file.read()
 with open('..\iconlocation.txt', 'r') as file:
-    # Read the contents of the file and assign it to a variable
     tempestpy_icon = file.read()
 
 print("Custom Hodograph Creator")
@@ -28,6 +28,7 @@ timestamp_of_hodograph = input()
 print("---------------------")
 print("Time to enter the sounding data for your hodograph!")
 print("Tell us what the wind speed and direction is for the following barometric pressure levels in the atmosphere:")
+
 def get_input_data(pressure):
     print(f"{pressure} hPa:")
     wind_speed = float(input("Wind Speed (in kts): "))
@@ -41,12 +42,15 @@ windspeed_two, winddirection_two = get_input_data(850)
 windspeed_three, winddirection_three = get_input_data(600)
 windspeed_four, winddirection_four = get_input_data(350)
 windspeed_five, winddirection_five = get_input_data(150)
+
 # Sample wind data (pressure levels in hPa, wind speed in knots, wind direction in degrees)
 pressure_levels = np.array([1000, 850, 600, 350, 150]) * units.hPa
 wind_speed = np.array([windspeed_surface, windspeed_two, windspeed_three, windspeed_four, windspeed_five]) * units.knots
 wind_direction = np.array([winddirection_surface, winddirection_two, winddirection_three, winddirection_four, winddirection_five]) * units.degrees
+
 # Processing your data and creating a Skew-T diagram
 print("Processing your data and creating a Hodograph out of it......")
+
 # Convert wind speed and direction to u/v components
 u, v = mpcalc.wind_components(wind_speed, wind_direction)
 
@@ -61,6 +65,11 @@ perp_shear_v = shear_u / shear_mag * 7.5 * units.knots
 
 rm_u, rm_v = mean_u + perp_shear_u, mean_v + perp_shear_v  # Right-moving
 lm_u, lm_v = mean_u - perp_shear_u, mean_v - perp_shear_v  # Left-moving
+
+# Calculate helicity (approximate using wind changes with respect to height)
+du_dz = np.diff(u) / np.diff(pressure_levels)  # Change in u with height
+dv_dz = np.diff(v) / np.diff(pressure_levels)  # Change in v with height
+helicity = np.sum(u[:-1] * dv_dz - v[:-1] * du_dz)  # Total helicity in m^2/s
 
 # Create hodograph plot
 fig, ax = plt.subplots(figsize=(6, 6))
@@ -95,6 +104,11 @@ ax.scatter([rm_u.m, lm_u.m], [rm_v.m, lm_v.m], color=['r', 'g'], zorder=3)
 # Mark RM and LM points
 ax.text(rm_u.m, rm_v.m, 'RM', color='r', fontsize=12, fontweight='bold', ha='left')
 ax.text(lm_u.m, lm_v.m, 'LM', color='g', fontsize=12, fontweight='bold', ha='right')
+
+# Display helicity in the corner of the plot
+ax.text(0.95, 0.05, f'Helicity: {helicity:.2f} m²/s', transform=ax.transAxes,
+        fontsize=12, verticalalignment='bottom', horizontalalignment='right',
+        bbox=dict(facecolor='white', alpha=0.8, edgecolor='black', boxstyle='round,pad=0.5'))
 
 plt.legend()
 plt.title(name_of_hodograph)
