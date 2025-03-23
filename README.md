@@ -19,7 +19,7 @@
 > - Storm Chasing Route Optimizer
 > - Forecasting Model Output Visualizer
 > - Cloud Cover Visualization Tool
-> - An app/script that can grab real-time imagery for any tropical system in a flash
+> - ~~An app/script that can grab an imagery link/display imagery for a tropical system in a flash~~
 > - Historical Weather Data Analysis Tool
 > - Weather Model Comparison Tool
 > - Wind Profile Analyzer
