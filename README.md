@@ -14,3 +14,13 @@
 
 > `pip install metpy`
 
+## Our future plans for this project:
+> We are working to expand this project with every version and in the future, we plan to add the following tools:
+> - Storm Chasing Route Optimizer
+> - Forecasting Model Output Visualizer
+> - Cloud Cover Visualization Tool
+> - An app that can grab real-time imagery for any tropical system in a flash
+> - Historical Weather Data Analysis Tool
+> - Weather Model Comparison Tool
+> - Wind Profile Analyzer
+> - Severe Weather Alert System
