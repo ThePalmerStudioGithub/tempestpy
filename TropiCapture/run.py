@@ -3,7 +3,10 @@ import requests
 from tkinter import *
 from PIL import Image, ImageTk
 from io import BytesIO
-version = "0.0.0.1";
+version = "0.0.0.2";
+# Open the file in read mode
+with open('..\globalversionnumber.txt', 'r') as file:
+    tempestpy_releasenameandversion = file.read()
 # Function to scrape active storm data from Force-13
 def scrape_active_storms():
     url = "https://www.force-13.com/cyclones"  # Replace with the actual URL
@@ -19,7 +22,7 @@ def scrape_active_storms():
         storm_ids = [option.text.strip() for option in soup.find_all('option') if "comments" not in option.text.lower()]
         
         # Define the status texts to remove
-        remove_statuses = ["Tropical Depression", "Invest", "Tropical Storm", "Tropical Cyclone"]
+        remove_statuses = ["Tropical Depression", "Invest", "Tropical Storm", "CYCLONE"]
         
         # Remove any of the status text from the storm IDs
         cleaned_storm_ids = []
@@ -65,7 +68,7 @@ def display_image(image):
     if image:
         # Create a window
         root = Tk()
-        root.title("Tropical System Imagery (Still)")
+        root.title("Tropical System Imagery (Still) - TropiCapture by Blaine Palmer (Ver {version}) || TempestPy {tempestpy_releasenameandversion}")
 
         # Convert the image to a format suitable for Tkinter
         img_tk = ImageTk.PhotoImage(image)
@@ -82,7 +85,7 @@ def display_animated_image(image):
     if image:
         # Create a window
         root = Tk()
-        root.title("Tropical System Imagery (Animated)")
+        root.title(f"Tropical System Imagery (Animated) - TropiCapture by Blaine Palmer (Ver {version}) || TempestPy {tempestpy_releasenameandversion}")
 
         # Create a label to display the image
         label = Label(root)
@@ -110,7 +113,7 @@ def display_animated_image(image):
 
 # Main function to interact with the user
 def main():
-    print("Welcome to the TropiCapture!")
+    print("Welcome to TropiCapture!")
     print("A program/script that is a part of the TempestPy Weather Enthusiast Suite")
     print(f"Version {version}")
     print("by Blaine Palmer")
