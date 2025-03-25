@@ -8,18 +8,19 @@
 > Below is a step by step guide on how to get TempestPy up and running!
 
 ## Installing TempestPy
-> To run TempestPy and it's accompanying scripts, you need to have [Python](https://python.org) and the package [MetPy](https://pypi.org/project/MetPy/) installed on pip.
+> To run TempestPy and it's accompanying scripts, you need to have [Python](https://python.org) and the packages [MetPy](https://pypi.org/project/MetPy/) and [BeautifulSoup4](https://pypi.org/project/beautifulsoup4) installed on pip.
 
 > To install "MetPy" on pip, just run the following command:
 
 > `pip install metpy`
 
+> To install "BS4" on pip, just run the following command:
+
+> `pip install bs4`
+
 ## Our future plans for this project:
 > We are working to expand this project with every version and in the future, we plan to add the following tools:
 > - Storm Chasing Route Optimizer
-> - Forecasting Model Output Visualizer
-> - Cloud Cover Visualization Tool
 > - Historical Weather Data Analysis Tool
 > - Weather Model Comparison Tool
 > - Wind Profile Analyzer
-> - Severe Weather Alert System
