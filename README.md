@@ -8,7 +8,7 @@
 > Below is a step by step guide on how to get TempestPy up and running!
 
 ## Installing TempestPy
-> To run TempestPy and it's accompanying scripts, you need to have [Python](https://python.org) and the packages [MetPy](https://pypi.org/project/MetPy/) and [BeautifulSoup4](https://pypi.org/project/beautifulsoup4) installed on pip. You also need to have [Git][https://git-scm.com] installed.
+> To run TempestPy and it's accompanying scripts, you need to have [Python](https://python.org) and the packages [MetPy](https://pypi.org/project/MetPy/) and [BeautifulSoup4](https://pypi.org/project/beautifulsoup4) installed on pip. You also need to have [Git](https://git-scm.com) installed.
 
 > To install "MetPy" on pip, just run the following command:
 
